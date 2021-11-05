@@ -1,0 +1,16 @@
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ViliCommander.exe
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ViliCommander.deps.json
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ViliCommander.runtimeconfig.json
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ViliCommander.runtimeconfig.dev.json
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ViliCommander.dll
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ref\ViliCommander.dll
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\bin\Debug\net5.0\ViliCommander.pdb
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.csproj.AssemblyReference.cache
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.AssemblyInfoInputs.cache
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.AssemblyInfo.cs
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.csproj.CoreCompileInputs.cache
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.dll
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ref\ViliCommander.dll
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.pdb
+C:\Users\Vili\source\repos\ViliCommander\ViliCommander\obj\Debug\net5.0\ViliCommander.genruntimeconfig.cache
