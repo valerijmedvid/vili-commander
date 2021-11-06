@@ -1,33 +1,23 @@
 ﻿using System;
 using System.IO;
+using ViliCommander.Services;
+using ViliCommander.Components;
 
 namespace ViliCommander
 {
     internal class Program
     {
         static void Main(string[] args)
-
-
         {
-
-            DirectoryReaderService drs = new DirectoryReaderService(@"C:\");
-            foreach (string[] item in drs.getFoldersFromPath())
+            ConsoleKeyInfo keyInfo = new ConsoleKeyInfo();
+            ExplorerComponent explorer = new ExplorerComponent();
+            do
             {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.Write(item[0].PadRight(30, ' ') + "| ");
-                Console.Write(item[1].PadLeft(8, ' ') + "| ");
-                Console.WriteLine(item[2].PadLeft(10, ' ') + "| ");
+                explorer.draw();
 
-            }
-            foreach (string[] item in drs.getFilesFromPath())
-            {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.Write(item[0].PadRight(30, ' ') + "| ");
-                Console.Write(item[1].PadLeft(8, ' ') + "| ");
-                Console.WriteLine(item[2].PadLeft(10, ' ') + "| ");
-
-            }
-            Console.ReadKey();
+                keyInfo = Console.ReadKey(true);
+                explorer.keyHandler(keyInfo);
+            } while (keyInfo.Key != ConsoleKey.Escape);
         }
     }
 }

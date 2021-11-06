@@ -4,40 +4,42 @@ using System.IO;
 using System.Linq;
 
 
-namespace ViliCommander
+namespace ViliCommander.Services
 {
     public class DirectoryReaderService
     {
-        string path;
 
-        public object ByteSize { get; private set; }
-
-        public DirectoryReaderService(string path = @"C:\")
+        public List<string[]> getFolderContent(string path)
         {
-            this.path = path;
+            List<string[]> dirs = getFoldersFromPath(path);
+            List<string[]> files = getFilesFromPath(path);
+            return dirs.Concat(files).ToList();
+
+
+
         }
 
-
-        public List<string[]> getFoldersFromPath()
+        private List<string[]> getFoldersFromPath(string path)
         {
-            DirectoryInfo di = new DirectoryInfo(this.path);
+            DirectoryInfo di = new DirectoryInfo(path);
             DirectoryInfo[] dirs = di.GetDirectories();
             List<string[]> result = new List<string[]>();
             foreach (DirectoryInfo dir in dirs)
             {
-                string dirSize = formatFileSize(getDirSize(dir)).ToString();
+                //string dirSize = formatFileSize(getDirSize(dir)).ToString();
+                string dirSize = "0";
                 string dirLastAccessTime = dir.LastAccessTime.ToShortDateString();
 
-                result.Add(new string[] { dir.Name, dirSize, dirLastAccessTime });
+                result.Add(new string[] { dir.Name, dirSize, dirLastAccessTime, "dir" });
             }
 
             return result;
         }
 
 
-        public List<string[]> getFilesFromPath()
+        private List<string[]> getFilesFromPath(string path)
         {
-            string[] files = Directory.GetFiles(this.path);
+            string[] files = Directory.GetFiles(path);
             List<string[]> result = new List<string[]>();
             foreach (string file in files)
             {
@@ -46,14 +48,14 @@ namespace ViliCommander
                 string fileSize = formatFileSize(fileInfo.Length).ToString();
                 string fileLastModify = fileInfo.LastWriteTime.ToShortDateString();
 
-                result.Add(new string[] { fileName, fileSize, fileLastModify });
+                result.Add(new string[] { fileName, fileSize, fileLastModify, "file" });
             }
 
             return result;
         }
 
 
-        public static long getDirSize(DirectoryInfo d)
+        private static long getDirSize(DirectoryInfo d)
         {
             long size = 0;
             // Add file sizes.
@@ -80,7 +82,7 @@ namespace ViliCommander
             return size;
         }
 
-        public static string formatFileSize(long bytes)
+        private static string formatFileSize(long bytes)
         {
             var unit = 1024;
             if (bytes < unit) { return $"{bytes} B"; }
