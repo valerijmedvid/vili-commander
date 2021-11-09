@@ -14,9 +14,6 @@ namespace ViliCommander.Services
             List<ItemInfo> dirs = getFoldersFromPath(path);
             List<ItemInfo> files = getFilesFromPath(path);
             return dirs.Concat(files).ToList();
-
-
-
         }
 
         private List<ItemInfo> getFoldersFromPath(string path)
@@ -27,7 +24,7 @@ namespace ViliCommander.Services
 
             if (path.ToLower() != @"c:\")
             {
-                result.Add(new ItemInfo("..", "UP--DIR", "", ItemInfo.ItemType.Folder));
+                result.Add(new ItemInfo("..", "UP--DIR", "", ItemInfo.ItemType.UpDir));
             }
             foreach (DirectoryInfo dir in dirs)
             {
@@ -84,6 +81,7 @@ namespace ViliCommander.Services
             {
                 size += getDirSize(di);
             }
+
             return size;
         }
 
@@ -93,6 +91,7 @@ namespace ViliCommander.Services
             if (bytes < unit) { return $"{bytes} B"; }
 
             var exp = (int)(Math.Log(bytes) / Math.Log(unit));
+
             return $"{bytes / Math.Pow(unit, exp):F1} {("KMGTPE")[exp - 1]}B";
         }
     }

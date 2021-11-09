@@ -11,13 +11,18 @@ namespace ViliCommander.Components
     {
         string leftPath = @"C:\";
         int leftStartPosition = 0;
+        int leftSelected = 0;
+        List<ItemInfo> leftDir;
 
 
         string rightPath = @"C:\Users";
         int rightStartPosition = 0;
+        int rightSelected = 0;
+        List<ItemInfo> rightDir;
 
 
         int explorerHeight = 20;
+        bool isLeftActive = true;
         public void draw()
         {
             Console.SetWindowSize(151, 40);
@@ -33,8 +38,71 @@ namespace ViliCommander.Components
 
         public void keyHandler(ConsoleKeyInfo keyInfo)
         {
-            Console.WriteLine(keyInfo.Key);
+            if (keyInfo.Key == ConsoleKey.DownArrow)
+            {
+                if (isLeftActive && this.leftSelected < this.leftDir.Count - 1)
+                {
+                    this.leftSelected++;
+                }
+                else if (!isLeftActive && this.rightSelected < this.rightDir.Count - 1)
+                {
+
+                    this.rightSelected++;
+
+                }
+            }
+
+            if (keyInfo.Key == ConsoleKey.UpArrow)
+            {
+                if (isLeftActive && this.leftSelected > 0)
+                {
+                    this.leftSelected--;
+                }
+                else if (!isLeftActive && this.rightSelected > 0)
+                {
+                    this.rightSelected--;
+                }
+            }
+
+            if (keyInfo.Key == ConsoleKey.Tab)
+            {
+                isLeftActive = isLeftActive ? false : true;
+            }
+
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                if (isLeftActive)
+                {
+                    if (this.leftDir[this.leftSelected].Type == ItemInfo.ItemType.Folder)
+                    {
+                        var temp = this.leftPath + @"\" + this.leftDir[this.leftSelected].Name;
+                        this.leftPath = temp.Replace(@"\\", @"\");
+                        this.leftSelected = 0;
+                    }
+                    else if (this.leftDir[this.leftSelected].Type == ItemInfo.ItemType.UpDir)
+                    {
+                        this.leftPath = @"C:\" + String.Join(@"\", this.leftPath.Replace(@"C:\", "").Split(@"\").SkipLast(1));
+                        this.leftSelected = 0;
+                    }
+
+                }
+                else
+                {
+                    if (this.rightDir[this.rightSelected].Type == ItemInfo.ItemType.Folder)
+                    {
+                        var temp = this.rightPath + @"\" + this.rightDir[this.rightSelected].Name;
+                        this.rightPath = temp.Replace(@"\\", @"\");
+                        this.rightSelected = 0;
+                    }
+                    else if (this.rightDir[this.rightSelected].Type == ItemInfo.ItemType.UpDir)
+                    {
+                        this.rightPath = @"C:\" + String.Join(@"\", this.rightPath.Replace(@"C:\", "").Split(@"\").SkipLast(1));
+                        this.rightSelected = 0;
+                    }
+                }
+            }
         }
+
 
         private void drawHeader()
         {
@@ -52,8 +120,8 @@ namespace ViliCommander.Components
             Console.WriteLine();
 
             DirectoryReaderService drs = new DirectoryReaderService();
-            List<ItemInfo> leftDir = drs.getFolderContent(this.leftPath);
-            List<ItemInfo> rightDir = drs.getFolderContent(this.rightPath);
+            this.leftDir = drs.getFolderContent(this.leftPath);
+            this.rightDir = drs.getFolderContent(this.rightPath);
 
 
             for (int line = 0; line < explorerHeight; line++)
@@ -61,7 +129,7 @@ namespace ViliCommander.Components
                 Console.Write("|");
                 if (leftDir.Count > line)
                 {
-                    this.drawBodyLine(leftDir[line + this.leftStartPosition]);
+                    this.drawBodyLine(leftDir[line + this.leftStartPosition], line == leftSelected && this.isLeftActive);
                 }
                 else
                 {
@@ -70,39 +138,42 @@ namespace ViliCommander.Components
                 Console.Write("|");
                 if (rightDir.Count > line)
                 {
-                    this.drawBodyLine(rightDir[line + this.rightStartPosition]);
+                    this.drawBodyLine(rightDir[line + this.rightStartPosition], line == rightSelected && !this.isLeftActive);
                 }
                 else
                 {
                     this.drawEmptyBodyLine();
                 }
                 Console.WriteLine();
-
             }
-
-
-
         }
 
-        private void drawBodyLine(ItemInfo item)
+        private void drawBodyLine(ItemInfo item, bool selected)
         {
-
-            if (item.Type == ItemInfo.ItemType.File)
+            if (selected)
+            {
+                Console.BackgroundColor = ConsoleColor.Cyan;
+            }
+            else if (item.Type == ItemInfo.ItemType.File)
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write(" " + item.Name.PadRight(33, ' '));
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("|");
             }
-            else
+
+
+            Console.Write(item.Type == ItemInfo.ItemType.File ? " " : "/");
+            if (item.Name.Length > 32)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("/" + item.Name.PadRight(33, ' ') + "|");
+                Console.Write(item.Name.Substring(0, 30) + "...");
             }
+            else { Console.Write(item.Name.PadRight(33, ' ')); }
 
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("|");
             Console.Write(item.Size.PadLeft(18, ' ') + "|");
-            Console.Write(item.LastModifyDate.PadLeft(19, ' ') + "|");
-
+            Console.Write(item.LastModifyDate.PadLeft(19, ' '));
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.Write('|');
         }
 
         private void drawEmptyBodyLine()
@@ -121,7 +192,6 @@ namespace ViliCommander.Components
             Console.Write("│");
             this.writeHeader("Modify time", 4);
             Console.Write("│");
-
         }
 
         private void writeHeader(string text, int padSize)
@@ -129,14 +199,19 @@ namespace ViliCommander.Components
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(text.PadLeft(padSize + text.Length, ' ') + " ".PadRight(padSize, ' '));
             Console.ForegroundColor = ConsoleColor.White;
-
         }
 
         private void drawFooter()
         {
             Console.Write("├".PadRight(74, '─') + "┤");
-            Console.Write("├".PadRight(74, '─') + "┤");
-            Console.WriteLine();
+            Console.WriteLine("├".PadRight(74, '─') + "┤");
+            Console.Write("│");
+            Console.Write(leftDir[this.leftSelected].Type == ItemInfo.ItemType.UpDir ? "UP--DIR".PadRight(73, ' ') : leftDir[this.leftSelected].Name.ToUpper().PadRight(73, ' '));
+            Console.Write("││");
+            Console.Write(rightDir[this.rightSelected].Type == ItemInfo.ItemType.UpDir ? "UP--DIR".PadRight(73, ' ') : rightDir[this.rightSelected].Name.ToUpper().PadRight(73, ' '));
+            Console.WriteLine("│");
+            Console.Write("└".PadRight(74, '─') + "┘");
+            Console.WriteLine("└".PadRight(74, '─') + "┘");
         }
 
     }

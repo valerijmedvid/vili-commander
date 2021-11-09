@@ -13,7 +13,8 @@ namespace ViliCommander.Services
         public enum ItemType
         {
             Folder,
-            File
+            File,
+            UpDir
         }
 
         public string Name { get; set; }
