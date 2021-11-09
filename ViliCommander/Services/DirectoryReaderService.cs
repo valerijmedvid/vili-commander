@@ -9,38 +9,43 @@ namespace ViliCommander.Services
     public class DirectoryReaderService
     {
 
-        public List<string[]> getFolderContent(string path)
+        public List<ItemInfo> getFolderContent(string path)
         {
-            List<string[]> dirs = getFoldersFromPath(path);
-            List<string[]> files = getFilesFromPath(path);
+            List<ItemInfo> dirs = getFoldersFromPath(path);
+            List<ItemInfo> files = getFilesFromPath(path);
             return dirs.Concat(files).ToList();
 
 
 
         }
 
-        private List<string[]> getFoldersFromPath(string path)
+        private List<ItemInfo> getFoldersFromPath(string path)
         {
             DirectoryInfo di = new DirectoryInfo(path);
             DirectoryInfo[] dirs = di.GetDirectories();
-            List<string[]> result = new List<string[]>();
+            var result = new List<ItemInfo>();
+
+            if (path.ToLower() != @"c:\")
+            {
+                result.Add(new ItemInfo("..", "UP--DIR", "", ItemInfo.ItemType.Folder));
+            }
             foreach (DirectoryInfo dir in dirs)
             {
                 //string dirSize = formatFileSize(getDirSize(dir)).ToString();
                 string dirSize = "0";
                 string dirLastAccessTime = dir.LastAccessTime.ToShortDateString();
 
-                result.Add(new string[] { dir.Name, dirSize, dirLastAccessTime, "dir" });
+                result.Add(new ItemInfo(dir.Name, dirSize, dirLastAccessTime, ItemInfo.ItemType.Folder));
             }
 
             return result;
         }
 
 
-        private List<string[]> getFilesFromPath(string path)
+        private List<ItemInfo> getFilesFromPath(string path)
         {
             string[] files = Directory.GetFiles(path);
-            List<string[]> result = new List<string[]>();
+            var result = new List<ItemInfo>();
             foreach (string file in files)
             {
                 FileInfo fileInfo = new FileInfo(file);
@@ -48,7 +53,7 @@ namespace ViliCommander.Services
                 string fileSize = formatFileSize(fileInfo.Length).ToString();
                 string fileLastModify = fileInfo.LastWriteTime.ToShortDateString();
 
-                result.Add(new string[] { fileName, fileSize, fileLastModify, "file" });
+                result.Add(new ItemInfo(fileName, fileSize, fileLastModify, ItemInfo.ItemType.File));
             }
 
             return result;

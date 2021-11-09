@@ -52,27 +52,27 @@ namespace ViliCommander.Components
             Console.WriteLine();
 
             DirectoryReaderService drs = new DirectoryReaderService();
-            List<string[]> leftDir = drs.getFolderContent(this.leftPath);
-            List<string[]> rightDir = drs.getFolderContent(this.rightPath);
+            List<ItemInfo> leftDir = drs.getFolderContent(this.leftPath);
+            List<ItemInfo> rightDir = drs.getFolderContent(this.rightPath);
 
 
             for (int line = 0; line < explorerHeight; line++)
             {
                 Console.Write("|");
-                try
+                if (leftDir.Count > line)
                 {
                     this.drawBodyLine(leftDir[line + this.leftStartPosition]);
                 }
-                catch (ArgumentOutOfRangeException)
+                else
                 {
                     this.drawEmptyBodyLine();
                 }
                 Console.Write("|");
-                try
+                if (rightDir.Count > line)
                 {
                     this.drawBodyLine(rightDir[line + this.rightStartPosition]);
                 }
-                catch (ArgumentOutOfRangeException)
+                else
                 {
                     this.drawEmptyBodyLine();
                 }
@@ -84,24 +84,24 @@ namespace ViliCommander.Components
 
         }
 
-        private void drawBodyLine(string[] item)
+        private void drawBodyLine(ItemInfo item)
         {
 
-            if (item[3] == "file")
+            if (item.Type == ItemInfo.ItemType.File)
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write(" " + item[0].PadRight(33, ' '));
+                Console.Write(" " + item.Name.PadRight(33, ' '));
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("|");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("/" + item[0].PadRight(33, ' ') + "|");
+                Console.Write("/" + item.Name.PadRight(33, ' ') + "|");
             }
 
-            Console.Write(item[1].PadLeft(18, ' ') + "|");
-            Console.Write(item[2].PadLeft(19, ' ') + "|");
+            Console.Write(item.Size.PadLeft(18, ' ') + "|");
+            Console.Write(item.LastModifyDate.PadLeft(19, ' ') + "|");
 
         }
 
