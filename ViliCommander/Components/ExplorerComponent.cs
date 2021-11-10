@@ -21,7 +21,7 @@ namespace ViliCommander.Components
         List<ItemInfo> rightDir;
 
 
-        int explorerHeight = 20;
+        int explorerHeight = 32;
         bool isLeftActive = true;
         public void draw()
         {
@@ -43,12 +43,19 @@ namespace ViliCommander.Components
                 if (isLeftActive && this.leftSelected < this.leftDir.Count - 1)
                 {
                     this.leftSelected++;
+                    if (this.leftSelected > this.explorerHeight - 1)
+                    {
+                        this.leftStartPosition++;
+                    }
                 }
                 else if (!isLeftActive && this.rightSelected < this.rightDir.Count - 1)
                 {
 
                     this.rightSelected++;
-
+                    if (this.rightSelected > this.explorerHeight - 1)
+                    {
+                        this.rightStartPosition++;
+                    }
                 }
             }
 
@@ -57,6 +64,10 @@ namespace ViliCommander.Components
                 if (isLeftActive && this.leftSelected > 0)
                 {
                     this.leftSelected--;
+                    if (this.leftSelected > this.explorerHeight - this.leftStartPosition - 1)
+                    {
+                        this.leftStartPosition--;
+                    }
                 }
                 else if (!isLeftActive && this.rightSelected > 0)
                 {
@@ -78,11 +89,13 @@ namespace ViliCommander.Components
                         var temp = this.leftPath + @"\" + this.leftDir[this.leftSelected].Name;
                         this.leftPath = temp.Replace(@"\\", @"\");
                         this.leftSelected = 0;
+                        this.leftStartPosition = 0;
                     }
                     else if (this.leftDir[this.leftSelected].Type == ItemInfo.ItemType.UpDir)
                     {
                         this.leftPath = @"C:\" + String.Join(@"\", this.leftPath.Replace(@"C:\", "").Split(@"\").SkipLast(1));
                         this.leftSelected = 0;
+                        this.leftStartPosition = 0;
                     }
 
                 }
@@ -93,11 +106,13 @@ namespace ViliCommander.Components
                         var temp = this.rightPath + @"\" + this.rightDir[this.rightSelected].Name;
                         this.rightPath = temp.Replace(@"\\", @"\");
                         this.rightSelected = 0;
+                        this.rightStartPosition = 0;
                     }
                     else if (this.rightDir[this.rightSelected].Type == ItemInfo.ItemType.UpDir)
                     {
                         this.rightPath = @"C:\" + String.Join(@"\", this.rightPath.Replace(@"C:\", "").Split(@"\").SkipLast(1));
                         this.rightSelected = 0;
+                        this.rightStartPosition = 0;
                     }
                 }
             }
@@ -129,7 +144,7 @@ namespace ViliCommander.Components
                 Console.Write("|");
                 if (leftDir.Count > line)
                 {
-                    this.drawBodyLine(leftDir[line + this.leftStartPosition], line == leftSelected && this.isLeftActive);
+                    this.drawBodyLine(leftDir[line + this.leftStartPosition], line == leftSelected - this.leftStartPosition && this.isLeftActive);
                 }
                 else
                 {
@@ -138,7 +153,7 @@ namespace ViliCommander.Components
                 Console.Write("|");
                 if (rightDir.Count > line)
                 {
-                    this.drawBodyLine(rightDir[line + this.rightStartPosition], line == rightSelected && !this.isLeftActive);
+                    this.drawBodyLine(rightDir[line + this.rightStartPosition], line == rightSelected - this.rightStartPosition && !this.isLeftActive);
                 }
                 else
                 {
@@ -153,6 +168,7 @@ namespace ViliCommander.Components
             if (selected)
             {
                 Console.BackgroundColor = ConsoleColor.Cyan;
+                Console.ForegroundColor = ConsoleColor.Black;
             }
             else if (item.Type == ItemInfo.ItemType.File)
             {
