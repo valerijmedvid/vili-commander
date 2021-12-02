@@ -29,7 +29,7 @@ namespace ViliCommander.Services
             foreach (DirectoryInfo dir in dirs)
             {
                 //string dirSize = formatFileSize(getDirSize(dir)).ToString();
-                string dirSize = "0";
+                string dirSize = "0 B";
                 string dirLastAccessTime = dir.LastAccessTime.ToShortDateString();
 
                 result.Add(new ItemInfo(dir.Name, dirSize, dirLastAccessTime, ItemInfo.ItemType.Folder));

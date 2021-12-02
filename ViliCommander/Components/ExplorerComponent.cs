@@ -21,12 +21,12 @@ namespace ViliCommander.Components
         List<ItemInfo> rightDir;
 
 
-        int explorerHeight = 32;
+        int explorerHeight = 33;
         bool isLeftActive = true;
         public void draw()
         {
-            Console.SetWindowSize(151, 40);
-            Console.Clear();
+            Console.SetWindowSize(150, 41);
+            Console.SetCursorPosition(0,0);
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.White;
 

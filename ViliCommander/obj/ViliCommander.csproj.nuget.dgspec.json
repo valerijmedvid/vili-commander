@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vili\\source\\repos\\ViliCommander\\ViliCommander\\ViliCommander.csproj": {}
+    "C:\\Users\\Vili\\source\\repos\\vilicommander\\ViliCommander\\ViliCommander.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vili\\source\\repos\\ViliCommander\\ViliCommander\\ViliCommander.csproj": {
+    "C:\\Users\\Vili\\source\\repos\\vilicommander\\ViliCommander\\ViliCommander.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vili\\source\\repos\\ViliCommander\\ViliCommander\\ViliCommander.csproj",
+        "projectUniqueName": "C:\\Users\\Vili\\source\\repos\\vilicommander\\ViliCommander\\ViliCommander.csproj",
         "projectName": "ViliCommander",
-        "projectPath": "C:\\Users\\Vili\\source\\repos\\ViliCommander\\ViliCommander\\ViliCommander.csproj",
+        "projectPath": "C:\\Users\\Vili\\source\\repos\\vilicommander\\ViliCommander\\ViliCommander.csproj",
         "packagesPath": "C:\\Users\\Vili\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vili\\source\\repos\\ViliCommander\\ViliCommander\\obj\\",
+        "outputPath": "C:\\Users\\Vili\\source\\repos\\vilicommander\\ViliCommander\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Vili\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -54,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.2.21505.57\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
